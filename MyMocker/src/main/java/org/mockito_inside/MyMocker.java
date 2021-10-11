@@ -19,6 +19,9 @@ public class MyMocker {
 	}
 
 	public static <R> Stubber<R> when( @SuppressWarnings( "unused" ) R unused ) {
-		return new StubberIml<>();
+		Invocation invocation = MockingContext.get().pullInvocationForProcess();
+		StubbingRegistry stubbingRegistry = invocation.getStubbingRegistry();
+		InvocationStub<R> invocationStub = stubbingRegistry.createStubFor( invocation );
+		return new StubberIml<>( invocationStub );
 	}
 }

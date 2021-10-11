@@ -27,7 +27,7 @@ class MyMockerTest {
 	}
 
 	@Test
-	void stubbingWithoutArguments() {
+	void stubbing_withoutArguments() {
 		when( mock.getInt() ).thenReturn( 1 );
 		when( mock.getObject() ).thenReturn( mock );
 		when( mock.getString() ).thenReturn( "abc" );
