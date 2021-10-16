@@ -49,4 +49,21 @@ class MyMockerTest {
 		assertThat( mock.getObject() ).isEqualTo( "a" );
 		assertThat( anotherMockForSameClass.getObject() ).isEqualTo( "b" );
 	}
+
+	@Test
+	void customAnswer() {
+		int[] counter = new int[]{ 0 };
+		when( mock.getInt() ).then( invocation -> ++counter[0] );
+
+		assertThat( mock.getInt() ).isEqualTo( 1 );
+		assertThat( mock.getInt() ).isEqualTo( 2 );
+		assertThat( mock.getInt() ).isEqualTo( 3 );
+	}
+
+	@Test
+	void thenThrow() {
+		when( mock.getString() ).thenThrow( new IllegalStateException( "unknown" ) );
+
+		assertThatThrownBy( mock::getString ).isInstanceOf( IllegalStateException.class ).hasMessage( "unknown" );
+	}
 }

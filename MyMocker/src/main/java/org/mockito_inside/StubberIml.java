@@ -1,8 +1,5 @@
 package org.mockito_inside;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-
 public class StubberIml<R> implements Stubber<R> {
 
 	private final InvocationStub<R> invocationStub;
@@ -12,7 +9,7 @@ public class StubberIml<R> implements Stubber<R> {
 	}
 
 	@Override
-	public void thenReturn( @Nullable R value ) {
-		invocationStub.setReturnValue( value );
+	public void then( Answer<R> answer ) {
+		invocationStub.setAnswer( answer );
 	}
 }

@@ -13,7 +13,7 @@ public class MockInvocationHandler implements InvocationHandler {
 
 	@Nullable
 	@Override
-	public Object invoke( Object mock, Method method, Object[] args ) {
+	public Object invoke( Object mock, Method method, Object[] args ) throws Throwable {
 
 		Invocation invocation = new InvocationImpl( mock, method, args, stubbingRegistry );
 		MockingContext.get().pushInvocationForProcess( invocation );
@@ -22,10 +22,10 @@ public class MockInvocationHandler implements InvocationHandler {
 	}
 
 	@Nullable
-	private Object findReturnValue( Invocation invocation ) {
+	private Object findReturnValue( Invocation invocation ) throws Throwable {
 		InvocationStub<?> invocationStub = stubbingRegistry.findStubFor( invocation );
 		return invocationStub != null
-		       ? invocationStub.getReturnValue()
+		       ? invocationStub.getAnswer().answer( invocation )
 		       : TypeUtils.getDefaultValue( invocation.getMethod().getReturnType() );
 	}
 }
