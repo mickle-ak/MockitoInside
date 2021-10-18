@@ -66,4 +66,14 @@ class MyMockerTest {
 
 		assertThatThrownBy( mock::getString ).isInstanceOf( IllegalStateException.class ).hasMessage( "unknown" );
 	}
+
+	@Test
+	void stabbing_with_arguments() {
+		when( mock.getObject( "a" ) ).thenReturn( ">a" );
+		when( mock.getObject( "b" ) ).thenReturn( ">b" );
+
+		assertThat( mock.getObject( "a" ) ).isEqualTo( ">a" );
+		assertThat( mock.getObject( "b" ) ).isEqualTo( ">b" );
+		assertThat( mock.getObject( "c" ) ).isNull();
+	}
 }

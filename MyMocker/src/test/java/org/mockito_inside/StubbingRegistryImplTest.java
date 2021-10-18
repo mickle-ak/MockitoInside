@@ -31,13 +31,41 @@ class StubbingRegistryImplTest {
 		assertThat( registry.findStubFor( createInvocation( "getObject" ) ) ).isSameAs( stub_getObject_2 );
 	}
 
+	@Test
+	void findStub_return_stub_for_arguments() throws NoSuchMethodException {
+		InvocationStub<?> stubA = registry.createStubFor( createInvocation( "getObject", "a" ) );
+		InvocationStub<?> stubB = registry.createStubFor( createInvocation( "getObject", "b" ) );
 
-	private Invocation createInvocation( String methodName ) throws NoSuchMethodException {
-		Method method = findMethod( methodName );
-		return new InvocationImpl( mock( VeryDifficultToCreateService.class ), method, new Object[0], registry );
+		assertThat( registry.findStubFor( createInvocation( "getObject", "a" ) ) ).isSameAs( stubA );
+		assertThat( registry.findStubFor( createInvocation( "getObject", "b" ) ) ).isSameAs( stubB );
+		assertThat( registry.findStubFor( createInvocation( "getObject", "c" ) ) ).isNull(); // not found
 	}
 
-	private Method findMethod( String objectName ) throws NoSuchMethodException {
-		return VeryDifficultToCreateService.class.getMethod( objectName );
+
+	private Invocation createInvocation( String methodName, Object... arguments ) throws NoSuchMethodException {
+		Method method = findMethod( methodName, arguments );
+		return new InvocationImpl( mock( VeryDifficultToCreateService.class ), method, arguments, registry );
+	}
+
+	private Method findMethod( String methodName, Object... arguments ) throws NoSuchMethodException {
+		for( Method methodCandidate : VeryDifficultToCreateService.class.getMethods() ) {
+			if( methodCandidate.getName().equals( methodName ) && matchArguments( methodCandidate, arguments ) ) {
+				return methodCandidate;
+			}
+		}
+		throw new NoSuchMethodException( methodName + "(" + arguments.length + " arguments)" );
+	}
+
+	private boolean matchArguments( Method methodCandidate, Object[] arguments ) {
+		if( methodCandidate.getParameterCount() != arguments.length ) return false;
+
+		for( int i = 0; i < arguments.length; i++ ) {
+			Object argument = arguments[i];
+			Class<?> argumentCandidateClass = methodCandidate.getParameterTypes()[i];
+			if( !argumentCandidateClass.isInstance( argument ) ) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
