@@ -6,7 +6,9 @@ import org.mockito_inside_prod.VeryDifficultToCreateService;
 import java.util.AbstractList;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito_inside.MyMocker.mock;
 import static org.mockito_inside.MyMocker.when;
 
@@ -35,5 +37,16 @@ class MyMockerTest {
 		assertThat( mock.getInt() ).isEqualTo( 1 );
 		assertThat( mock.getObject() ).isSameAs( mock );
 		assertThat( mock.getString() ).isEqualTo( "abc" );
+	}
+
+	@Test
+	void separate_stubbing_for_separate_mocks() {
+		VeryDifficultToCreateService anotherMockForSameClass = mock( VeryDifficultToCreateService.class );
+
+		when( mock.getObject() ).thenReturn( "a" );
+		when( anotherMockForSameClass.getObject() ).thenReturn( "b" );
+
+		assertThat( mock.getObject() ).isEqualTo( "a" );
+		assertThat( anotherMockForSameClass.getObject() ).isEqualTo( "b" );
 	}
 }
