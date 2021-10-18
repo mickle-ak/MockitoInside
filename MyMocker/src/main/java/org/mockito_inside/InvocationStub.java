@@ -4,7 +4,7 @@ public interface InvocationStub<R> {
 
 	Invocation getStabbedInvocation();
 
-	void setAnswer( Answer<R> answer );
+	void addAnswer( Answer<R> answer );
 
-	Answer<R> getAnswer();
+	Answer<R> getNextAnswer();
 }

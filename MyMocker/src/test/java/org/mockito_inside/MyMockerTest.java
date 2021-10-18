@@ -76,4 +76,21 @@ class MyMockerTest {
 		assertThat( mock.getObject( "b" ) ).isEqualTo( ">b" );
 		assertThat( mock.getObject( "c" ) ).isNull();
 	}
+
+	@Test
+	void stub_can_return_many_answers_and_repeat_last_answer() {
+		when( mock.getObject() ).thenReturn( "1", "2", null )
+		                        .thenThrow( new IllegalArgumentException() )
+		                        .thenReturn( null )
+		                        .then( invocation -> "4" );
+
+		assertThat( mock.getObject() ).isEqualTo( "1" );
+		assertThat( mock.getObject() ).isEqualTo( "2" );
+		assertThat( mock.getObject() ).isNull();
+		assertThrows( IllegalArgumentException.class, mock::getObject );
+		assertThat( mock.getObject() ).isNull();
+		assertThat( mock.getObject() ).isEqualTo( "4" );
+		assertThat( mock.getObject() ).isEqualTo( "4" ); // repeat last answer
+		assertThat( mock.getObject() ).isEqualTo( "4" );
+	}
 }

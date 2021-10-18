@@ -22,16 +22,16 @@ public class StubbingRegistryImpl implements StubbingRegistry {
 	public InvocationStub<?> findStubFor( Invocation interceptedInvocation ) {
 		for( ListIterator<InvocationStub> iterator = stubs.listIterator( stubs.size() ); iterator.hasPrevious(); ) {
 			InvocationStub stubCandidate = iterator.previous();
-			if( stubMatchesInvocation( stubCandidate, interceptedInvocation ) ) {
+			if( matchInvocation( stubCandidate.getStabbedInvocation(), interceptedInvocation ) ) {
 				return stubCandidate;
 			}
 		}
 		return null;
 	}
 
-	private boolean stubMatchesInvocation( InvocationStub<?> stubCandidate, Invocation interceptedInvocation ) {
-		return Objects.equals( stubCandidate.getStabbedInvocation().getMethod(), interceptedInvocation.getMethod() )
-		       && matchArguments( stubCandidate.getStabbedInvocation().getArgs(), interceptedInvocation.getArgs() );
+	private boolean matchInvocation( Invocation stabbedInvocation, Invocation interceptedInvocation ) {
+		return Objects.equals( stabbedInvocation.getMethod(), interceptedInvocation.getMethod() )
+		       && matchArguments( stabbedInvocation.getArgs(), interceptedInvocation.getArgs() );
 	}
 
 	private boolean matchArguments( Object[] stabbedArgs, Object[] interceptedArgs ) {

@@ -9,7 +9,8 @@ public class StubberIml<R> implements Stubber<R> {
 	}
 
 	@Override
-	public void then( Answer<R> answer ) {
-		invocationStub.setAnswer( answer );
+	public Stubber<R> then( Answer<R> answer ) {
+		invocationStub.addAnswer( answer );
+		return this;
 	}
 }

@@ -5,13 +5,16 @@ import org.eclipse.jdt.annotation.Nullable;
 
 public interface Stubber<R> {
 
-	void then( Answer<R> answer );
+	Stubber<R> then( Answer<R> answer );
 
-	default void thenReturn( @Nullable R returnValue ) {
-		then( invocation -> returnValue );
+	@SuppressWarnings( "unchecked" )
+	default Stubber<R> thenReturn( @Nullable R value, @Nullable R... values ) {
+		then( invocation -> value );
+		for( R v : values ) then( invocation -> v );
+		return this;
 	}
 
-	default void thenThrow( Throwable throwable ) {
-		then( invocation -> {throw throwable;} );
+	default Stubber<R> thenThrow( Throwable throwable ) {
+		return then( invocation -> {throw throwable;} );
 	}
 }

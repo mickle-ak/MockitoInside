@@ -25,7 +25,7 @@ public class MockInvocationHandler implements InvocationHandler {
 	private Object findReturnValue( Invocation invocation ) throws Throwable {
 		InvocationStub<?> invocationStub = stubbingRegistry.findStubFor( invocation );
 		return invocationStub != null
-		       ? invocationStub.getAnswer().answer( invocation )
+		       ? invocationStub.getNextAnswer().answer( invocation )
 		       : TypeUtils.getDefaultValue( invocation.getMethod().getReturnType() );
 	}
 }
