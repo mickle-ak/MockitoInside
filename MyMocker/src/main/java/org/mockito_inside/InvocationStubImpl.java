@@ -22,6 +22,7 @@ public class InvocationStubImpl<R> implements InvocationStub<R> {
 
 	@Override
 	public Answer<R> getNextAnswer() {
+		if( answers.isEmpty() ) throw new IllegalStateException( "thenReturn() may be missing" );
 		return answers.size() > 1 ? answers.remove( 0 ) : answers.get( 0 );
 	}
 }

@@ -93,4 +93,11 @@ class MyMockerTest {
 		assertThat( mock.getObject() ).isEqualTo( "4" ); // repeat last answer
 		assertThat( mock.getObject() ).isEqualTo( "4" );
 	}
+
+	@Test
+	void whenWithoutThen_exception_thrown_by_next_method_invocation() {
+		when( mock.getObject() );
+
+		assertThrows( IllegalStateException.class, mock::getObject );
+	}
 }
