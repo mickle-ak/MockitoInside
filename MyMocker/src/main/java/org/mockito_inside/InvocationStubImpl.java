@@ -2,6 +2,7 @@ package org.mockito_inside;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.mockito_inside.argument_mathchers.ArgumentMatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,9 @@ public class InvocationStubImpl<R> implements InvocationStub<R> {
 
 	@Getter
 	private final Invocation stabbedInvocation;
+
+	@Getter
+	private final List<ArgumentMatcher> argumentMatchers;
 
 	private final List<Answer<R>> answers = new ArrayList<>();
 

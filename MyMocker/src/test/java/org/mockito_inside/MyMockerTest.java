@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito_inside.MyMocker.mock;
 import static org.mockito_inside.MyMocker.when;
+import static org.mockito_inside.argument_mathchers.ArgumentMatchers.*;
 
 
 class MyMockerTest {
@@ -99,5 +100,17 @@ class MyMockerTest {
 		when( mock.getObject() );
 
 		assertThrows( IllegalStateException.class, mock::getObject );
+	}
+
+	@Test
+	void argumentsMatchers() {
+		when( mock.getObject( any(), any( String.class ), anyInt() ) ).thenReturn( "matched!" );
+		when( mock.getObject( eq( "a" ), eq( "b" ), eq( "c" ) ) ).thenReturn( "abc" );
+
+		assertThat( mock.getObject( new Object(), "any-string", 1 ) ).isEqualTo( "matched!" );
+		assertThat( mock.getObject( "a", "b", "c" ) ).isEqualTo( "abc" );
+		assertThat( mock.getObject( 3L, "another-string", 99 ) ).isEqualTo( "matched!" ); // another values, matched
+		assertThat( mock.getObject( new Object(), 2L, 1 ) ).isNull(); // not natches - p2 not a string
+		assertThat( mock.getObject( new Object(), "2L", "non-int" ) ).isNull(); // not natches - p3 not an integer
 	}
 }

@@ -1,5 +1,12 @@
 package org.mockito_inside;
 
+
+import org.eclipse.jdt.annotation.Nullable;
+import org.mockito_inside.argument_mathchers.ArgumentMatcher;
+
+import java.util.List;
+
+
 public interface MockingContext {
 
 	static MockingContext get() {
@@ -9,4 +16,9 @@ public interface MockingContext {
 	void pushInvocationForProcess( StubbedInvocation invocation );
 
 	StubbedInvocation pullInvocationForProcess() throws IllegalStateException;
+
+	void pushArgumentMatcher( ArgumentMatcher matcher );
+
+	@Nullable
+	List<ArgumentMatcher> popAllArgumentMatchers() throws IllegalStateException;
 }

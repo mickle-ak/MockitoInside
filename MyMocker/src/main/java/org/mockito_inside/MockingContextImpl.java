@@ -3,6 +3,10 @@ package org.mockito_inside;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.eclipse.jdt.annotation.Nullable;
+import org.mockito_inside.argument_mathchers.ArgumentMatcher;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @NoArgsConstructor( access = AccessLevel.PACKAGE )
@@ -12,6 +16,10 @@ public class MockingContextImpl implements MockingContext {
 
 	@Nullable
 	private StubbedInvocation invocationForProcess;
+
+	@Nullable
+	private List<ArgumentMatcher> matchers;
+
 
 	@Override
 	public void pushInvocationForProcess( StubbedInvocation invocation ) throws IllegalStateException {
@@ -23,6 +31,20 @@ public class MockingContextImpl implements MockingContext {
 		if( invocationForProcess == null ) throw new IllegalStateException( "Invocation must be stored before used" );
 		@Nullable StubbedInvocation result = invocationForProcess;
 		invocationForProcess = null;
+		return result;
+	}
+
+	@Override
+	public void pushArgumentMatcher( ArgumentMatcher matcher ) {
+		if( matchers == null ) matchers = new ArrayList<>();
+		matchers.add( matcher );
+	}
+
+	@Override
+	@Nullable
+	public List<ArgumentMatcher> popAllArgumentMatchers() throws IllegalStateException {
+		List<ArgumentMatcher> result = matchers;
+		matchers = null;
 		return result;
 	}
 }
