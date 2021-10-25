@@ -15,7 +15,7 @@ public class MockInvocationHandler implements InvocationHandler {
 	@Override
 	public Object invoke( Object mock, Method method, Object[] args ) throws Throwable {
 
-		Invocation invocation = new InvocationImpl( mock, method, args, stubbingRegistry );
+		StubbedInvocation invocation = new InvocationImpl( mock, method, args, stubbingRegistry );
 		MockingContext.get().pushInvocationForProcess( invocation );
 
 		return findReturnValue( invocation );

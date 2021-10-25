@@ -6,7 +6,7 @@ public interface MockingContext {
 		return MockingContextImpl.MOCKING_CONTEXT.get();
 	}
 
-	void pushInvocationForProcess( Invocation invocation );
+	void pushInvocationForProcess( StubbedInvocation invocation );
 
-	Invocation pullInvocationForProcess() throws IllegalStateException;
+	StubbedInvocation pullInvocationForProcess() throws IllegalStateException;
 }

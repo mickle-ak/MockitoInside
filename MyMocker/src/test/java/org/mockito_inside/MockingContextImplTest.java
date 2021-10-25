@@ -21,8 +21,8 @@ class MockingContextImplTest {
 	@Nested
 	class MultiPulls {
 
-		private final Invocation invocation1 = mock( Invocation.class );
-		private final Invocation invocation2 = mock( Invocation.class );
+		private final StubbedInvocation invocation1 = mock( StubbedInvocation.class );
+		private final StubbedInvocation invocation2 = mock( StubbedInvocation.class );
 
 		@BeforeEach
 		void setUp() {

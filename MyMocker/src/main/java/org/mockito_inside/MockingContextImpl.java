@@ -11,17 +11,17 @@ public class MockingContextImpl implements MockingContext {
 	static final ThreadLocal<MockingContext> MOCKING_CONTEXT = ThreadLocal.withInitial( MockingContextImpl::new );
 
 	@Nullable
-	private Invocation invocationForProcess;
+	private StubbedInvocation invocationForProcess;
 
 	@Override
-	public void pushInvocationForProcess( Invocation invocation ) throws IllegalStateException {
+	public void pushInvocationForProcess( StubbedInvocation invocation ) throws IllegalStateException {
 		invocationForProcess = invocation;
 	}
 
 	@Override
-	public Invocation pullInvocationForProcess() throws IllegalStateException {
+	public StubbedInvocation pullInvocationForProcess() throws IllegalStateException {
 		if( invocationForProcess == null ) throw new IllegalStateException( "Invocation must be stored before used" );
-		@Nullable Invocation result = invocationForProcess;
+		@Nullable StubbedInvocation result = invocationForProcess;
 		invocationForProcess = null;
 		return result;
 	}

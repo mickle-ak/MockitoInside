@@ -7,5 +7,5 @@ import org.eclipse.jdt.annotation.Nullable;
 public interface Answer<R> {
 
 	@Nullable
-	R answer( InterceptedInvocation invocation ) throws Throwable;
+	R answer( Invocation invocation ) throws Throwable;
 }

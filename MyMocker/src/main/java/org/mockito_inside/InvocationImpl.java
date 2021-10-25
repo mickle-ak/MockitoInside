@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 
 
 @Value
-public class InvocationImpl implements Invocation {
+public class InvocationImpl implements StubbedInvocation {
 
 	Object           mock;
 	Method           method;

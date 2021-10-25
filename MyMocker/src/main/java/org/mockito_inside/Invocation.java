@@ -1,7 +1,12 @@
 package org.mockito_inside;
 
 
-public interface Invocation extends InterceptedInvocation {
+import java.lang.reflect.Method;
 
-	StubbingRegistry getStubbingRegistry();
+
+public interface Invocation {
+
+	Object getMock();
+	Method getMethod();
+	Object[] getArgs();
 }
