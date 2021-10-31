@@ -147,4 +147,16 @@ class MyMockerTest {
 		assertThat( mock.getObject( 1L ) ).isNull(); // long is not implicit assignable to int or double
 		assertThat( mock.getObject( "c" ) ).isNull();
 	}
+
+	@Test
+	void argumentMatchers_custom_matcher() {
+		when( mock.getObject( argThat( o -> o instanceof String && ( (String) o ).startsWith( "a" ) && ( (String) o ).endsWith( "b" ) ) ) )
+				.thenReturn( "a...b" );
+
+		assertThat( mock.getObject( "aaaab" ) ).isEqualTo( "a...b" );
+		assertThat( mock.getObject( "abbbb" ) ).isEqualTo( "a...b" );
+		assertThat( mock.getObject( "ab" ) ).isEqualTo( "a...b" );
+		assertThat( mock.getObject( "a" ) ).isNull();
+		assertThat( mock.getObject( "b" ) ).isNull();
+	}
 }

@@ -13,6 +13,12 @@ import java.util.stream.Stream;
 public class ArgumentMatchers {
 
 	@Nullable
+	public static Object argThat( ArgumentMatcher matcher ) {
+		pushArgumentMatcher( matcher );
+		return null;
+	}
+
+	@Nullable
 	public static Object any() {
 		pushArgumentMatcher( new Any() );
 		return null;
