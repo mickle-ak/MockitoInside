@@ -113,4 +113,22 @@ class MyMockerTest {
 		assertThat( mock.getObject( new Object(), 2L, 1 ) ).isNull(); // not natches - p2 not a string
 		assertThat( mock.getObject( new Object(), "2L", "non-int" ) ).isNull(); // not natches - p3 not an integer
 	}
+
+	@Test
+	void last_stub_covers_previous() {
+		when( mock.getObject( any() ) ).thenReturn( "any" );
+		when( mock.getObject( any( String.class ) ) ).thenReturn( "any(String)-first" );
+		when( mock.getObject( any( String.class ) ) ).thenReturn( "any(String)" );
+		when( mock.getObject( anyInt() ) ).thenReturn( "anyInt" );
+		when( mock.getObject( eq( "a" ) ) ).thenReturn( "eq(a)" );
+		when( mock.getObject( "a" ) ).thenReturn( "a" );
+		when( mock.getObject( "b" ) ).thenReturn( "b" );
+
+		assertThat( mock.getObject( "a" ) ).isEqualTo( "a" );
+		assertThat( mock.getObject( "b" ) ).isEqualTo( "b" );
+		assertThat( mock.getObject( 456 ) ).isEqualTo( "anyInt" );
+		assertThat( mock.getObject( "cde" ) ).isEqualTo( "any(String)" );
+		assertThat( mock.getObject( new Object() ) ).isEqualTo( "any" );
+		assertThat( mock.getObject( null ) ).isEqualTo( "any" );
+	}
 }
