@@ -19,6 +19,8 @@ public interface MockingContext {
 
 	void pushArgumentMatcher( ArgumentMatcher matcher );
 
+	ArgumentMatcher popArgumentMatcher();
+
 	@Nullable
-	List<ArgumentMatcher> popAllArgumentMatchers() throws IllegalStateException;
+	List<ArgumentMatcher> pullAllArgumentMatchers() throws IllegalStateException;
 }

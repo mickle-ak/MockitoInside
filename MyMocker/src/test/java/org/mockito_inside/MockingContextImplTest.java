@@ -22,7 +22,7 @@ class MockingContextImplTest {
 	}
 
 	@Nested
-	class MultiPulls {
+	class MultiPullsInvocations {
 
 		private final StubbedInvocation invocation1 = mock( StubbedInvocation.class );
 		private final StubbedInvocation invocation2 = mock( StubbedInvocation.class );
@@ -45,22 +45,49 @@ class MockingContextImplTest {
 		}
 	}
 
-	@Test
-	void popAllArgumentMatchers_pops_all_pushed_matchers() {
+	@Nested
+	class ArgumentMatchers {
+
 		ArgumentMatcher am1 = mock( ArgumentMatcher.class );
 		ArgumentMatcher am2 = mock( ArgumentMatcher.class );
 		ArgumentMatcher am3 = mock( ArgumentMatcher.class );
 
-		mockingContext.pushArgumentMatcher( am1 );
-		mockingContext.pushArgumentMatcher( am2 );
-		mockingContext.pushArgumentMatcher( am3 );
+		@BeforeEach
+		void setUp() {
+			mockingContext.pushArgumentMatcher( am1 );
+			mockingContext.pushArgumentMatcher( am2 );
+			mockingContext.pushArgumentMatcher( am3 );
+		}
 
-		List<ArgumentMatcher> matchers = mockingContext.popAllArgumentMatchers();
-		assertThat( matchers ).isNotNull().hasSize( 3 );
-		assertThat( matchers.get( 0 ) ).isSameAs( am1 );
-		assertThat( matchers.get( 1 ) ).isSameAs( am2 );
-		assertThat( matchers.get( 2 ) ).isSameAs( am3 );
+		@Test
+		void pullAllArgumentMatchers_returns_all_pushed_matchers() {
+			List<ArgumentMatcher> matchers = mockingContext.pullAllArgumentMatchers();
+			assertThat( matchers ).isNotNull().hasSize( 3 );
+			assertThat( matchers.get( 0 ) ).isSameAs( am1 );
+			assertThat( matchers.get( 1 ) ).isSameAs( am2 );
+			assertThat( matchers.get( 2 ) ).isSameAs( am3 );
+		}
 
-		assertThat( mockingContext.popAllArgumentMatchers() ).isNull(); // no matchers for second pop
+		@Test
+		void pullAllArgumentMatchers_second_pull_returns_null() {
+			assertThat( mockingContext.pullAllArgumentMatchers() ).as( "first pull" ).isNotNull();
+			assertThat( mockingContext.pullAllArgumentMatchers() ).as( "second pull => null" ).isNull();
+		}
+
+		@Test
+		void popArgumentMatcher_pops_in_correct_order() {
+			assertThat( mockingContext.popArgumentMatcher() ).isSameAs( am3 );
+			assertThat( mockingContext.popArgumentMatcher() ).isSameAs( am2 );
+			assertThat( mockingContext.popArgumentMatcher() ).isSameAs( am1 );
+		}
+
+		@Test
+		void popArgumentMatcher_exception_if_nothing_to_pop() {
+			mockingContext.popArgumentMatcher(); //  am1
+			mockingContext.popArgumentMatcher(); //  am2
+			mockingContext.popArgumentMatcher(); //  am3
+
+			assertThrows( IllegalStateException.class, mockingContext::popArgumentMatcher );
+		}
 	}
 }

@@ -22,7 +22,7 @@ public class MyMocker {
 
 	public static <R> Stubber<R> when( @SuppressWarnings( "unused" ) R unused ) {
 		StubbedInvocation invocation = MockingContext.get().pullInvocationForProcess();
-		List<ArgumentMatcher> argumentMatchers = MockingContext.get().popAllArgumentMatchers();
+		List<ArgumentMatcher> argumentMatchers = MockingContext.get().pullAllArgumentMatchers();
 		StubbingRegistry stubbingRegistry = invocation.getStubbingRegistry();
 		InvocationStub<R> invocationStub = stubbingRegistry.createStubFor( invocation, argumentMatchers );
 		return new StubberIml<>( invocationStub );

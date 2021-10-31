@@ -41,8 +41,16 @@ public class MockingContextImpl implements MockingContext {
 	}
 
 	@Override
+	public ArgumentMatcher popArgumentMatcher() {
+		if( matchers != null && !matchers.isEmpty() ) {
+			return matchers.remove( matchers.size() - 1 );
+		}
+		else throw new IllegalStateException( "No matchers to pop" );
+	}
+
+	@Override
 	@Nullable
-	public List<ArgumentMatcher> popAllArgumentMatchers() throws IllegalStateException {
+	public List<ArgumentMatcher> pullAllArgumentMatchers() throws IllegalStateException {
 		List<ArgumentMatcher> result = matchers;
 		matchers = null;
 		return result;

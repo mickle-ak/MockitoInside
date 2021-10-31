@@ -131,4 +131,20 @@ class MyMockerTest {
 		assertThat( mock.getObject( new Object() ) ).isEqualTo( "any" );
 		assertThat( mock.getObject( null ) ).isEqualTo( "any" );
 	}
+
+	@Test
+	void argumentMatchers_or() {
+		when( mock.getObject( or( eq( "1" ), any( Double.class ) ) ) ).thenReturn( "1_or_double" );
+		when( mock.getObject( or( eq( "a" ), eq( "b" ), anyInt() ) ) ).thenReturn( "a_or_b_or_int" );
+
+		assertThat( mock.getObject( "1" ) ).isEqualTo( "1_or_double" );
+		assertThat( mock.getObject( 1d ) ).isEqualTo( "1_or_double" );
+
+		assertThat( mock.getObject( "a" ) ).isEqualTo( "a_or_b_or_int" );
+		assertThat( mock.getObject( "b" ) ).isEqualTo( "a_or_b_or_int" );
+		assertThat( mock.getObject( 99 ) ).isEqualTo( "a_or_b_or_int" );
+
+		assertThat( mock.getObject( 1L ) ).isNull(); // long is not implicit assignable to int or double
+		assertThat( mock.getObject( "c" ) ).isNull();
+	}
 }
