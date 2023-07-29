@@ -5,6 +5,11 @@ allprojects {
     version = "1.0.0"
 }
 
+val junit5Version  = "5.10.0"
+val assertjVersion = "3.24.2"
+val lombokVersion  = "1.18.28"
+val mockitoVersion = "5.4.0"
+
 subprojects {
     repositories {
         mavenCentral()
@@ -17,9 +22,6 @@ subprojects {
     }
 
     dependencies {
-        val junit5Version = "5.8.1"
-        val assertjVersion = "3.21.0"
-        val lombokVersion = "1.18.20"
 
         "implementation"("org.eclipse.jdt:org.eclipse.jdt.annotation:2.2.600")
 
@@ -44,7 +46,7 @@ project(":MyMocker") {
 project(":Mockito") {
     dependencies {
         "implementation"(project(":prod"))
-        "testImplementation"("org.mockito:mockito-inline:4.0.0")
+        "testImplementation"("org.mockito:mockito-core:$mockitoVersion")
     }
 }
 
