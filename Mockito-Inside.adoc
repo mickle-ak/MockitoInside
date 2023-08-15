@@ -7,24 +7,150 @@ Mikhail Kiselev <mickle.ak@gmail.com>
 
 
 
-[plantuml, target=diagram-1, format=png]
+[plantuml, target=class-diagram, format=png]
 ....
 struct BlockProcessor {
 }
 
-BlockProcessor <|-- DiagramBlock
+BlockProcessor <|- DiagramBlock
 DiagramBlock <|-- DitaaBlock
 DiagramBlock <|-- PlantUmlBlock
 ....
 
 fffg
 
-[plantuml, target=diagram-2, format=png]
+[plantuml, target=Sequence-diagram, format=png]
 ....
 Alice -> Bob: test
 Bob -> Dack: test
-Dack-> Alice: OK
+Dack --> Alice: OK
 ....
+
+[plantuml, target=use-case-3, format=png]
+....
+left to right direction
+actor Guest as g
+package Professional {
+  actor Chef as c
+  actor "Food Critic" as fc
+}
+package Restaurant {
+  usecase "Eat Food" as UC1
+  usecase "Pay for Food" as UC2
+  usecase "Drink" as UC3
+  usecase "Review" as UC4
+}
+fc --> UC4
+g --> UC1
+g --> UC2
+g --> UC3
+....
+[plantuml, target=activity-diagram, format=png]
+....
+if (condition?) then
+  :error;
+  stop
+endif
+#palegreen:action;
+....
+[plantuml, target=component-diagram, format=png]
+....
+[c]
+component C {
+  port p1
+  port p2
+  port p3
+  component c1
+}
+
+c --> p1
+c --> p2
+c --> p3
+p1 --> c1 : use
+p2 --> c1
+....
+
+[plantuml, target=deployment-diagram, format=png]
+....
+cloud cloud1
+cloud cloud2
+cloud cloud3
+cloud cloud4
+cloud cloud5
+cloud1 -0- cloud2
+cloud1 -0)- cloud3
+cloud1 -(0- cloud4
+cloud1 -(0)- cloud5
+....
+
+[plantuml, target=state-diagram, format=png]
+....
+hide empty description
+[*] --> State1
+State1 --> [*]
+State1 : this is a string
+State1 : this is another string
+
+State1 -> State2
+State2 --> [*]
+....
+
+[plantuml, target=json-diagram, format=png]
+....
+@startjson
+{
+   "fruit":"Apple",
+   "size":"Large",
+   "color": ["Red", "Green"]
+}
+@endjson
+....
+
+[plantuml, target=yaml-diagram, format=png]
+....
+@startyaml
+fruit: Apple
+size: Large
+color:
+  - Red
+  - Green
+@endyaml
+....
+
+[plantuml, target=ditaa-diagram, format=png]
+....
+@startditaa
++--------+   +-------+    +-------+
+|        +---+ ditaa +--> |       |
+|  Text  |   +-------+    |diagram|
+|Document|   |!magic!|    |       |
+|     {d}|   |       |    |       |
++---+----+   +-------+    +-------+
+    :                         ^
+    |       Lots of work      |
+    +-------------------------+
+@endditaa
+....
+
+[plantuml, target=wbs-diagram, format=png]
+....
+@startwbs
++ Project
+ + Part One
+  + Task 1.1
+   - LeftTask 1.2
+   + Task 1.3
+  + Part Two
+   + Task 2.1
+   + Task 2.2
+   -_ Task 2.2.1 To the left boxless
+   -_ Task 2.2.2 To the Left boxless
+   +_ Task 2.2.3 To the right boxless
+@endwbs
+....
+
+
+
 
 == First level heading
 
