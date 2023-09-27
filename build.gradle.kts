@@ -14,6 +14,8 @@ val junit5Version  = "5.10.0"
 val assertjVersion = "3.24.2"
 val lombokVersion  = "1.18.28"
 val mockitoVersion = "5.5.0"
+val byteBuddyVersion = "1.14.8"
+val objenesisVersion = "3.3"
 
 subprojects {
     repositories {
@@ -29,16 +31,16 @@ subprojects {
 
     dependencies {
 
-        "implementation"("org.eclipse.jdt:org.eclipse.jdt.annotation:2.2.700")
+        implementation("org.eclipse.jdt:org.eclipse.jdt.annotation:2.2.700")
 
-        "testImplementation"(platform("org.junit:junit-bom:$junit5Version"))
-        "testImplementation"("org.junit.jupiter:junit-jupiter:$junit5Version")
-        "testImplementation"("org.assertj:assertj-core:$assertjVersion")
+        testImplementation(platform("org.junit:junit-bom:$junit5Version"))
+        testImplementation("org.junit.jupiter:junit-jupiter:$junit5Version")
+        testImplementation("org.assertj:assertj-core:$assertjVersion")
 
-        "compileOnly"("org.projectlombok:lombok:$lombokVersion")
-        "annotationProcessor"("org.projectlombok:lombok:$lombokVersion")
-        "testCompileOnly"("org.projectlombok:lombok:$lombokVersion")
-        "testAnnotationProcessor"("org.projectlombok:lombok:$lombokVersion")
+        compileOnly("org.projectlombok:lombok:$lombokVersion")
+        annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+        testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+        testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
     }
 
     apply(plugin = "idea")
@@ -52,7 +54,9 @@ subprojects {
 
 project(":MyMocker") {
     dependencies {
-        "implementation"(project(":prod"))
+        implementation(project(":prod"))
+        implementation("net.bytebuddy:byte-buddy:$byteBuddyVersion")
+        implementation("org.objenesis:objenesis:$objenesisVersion")
     }
 }
 

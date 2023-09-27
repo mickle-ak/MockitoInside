@@ -1,5 +1,9 @@
 package org.mockito_inside;
 
+import net.bytebuddy.implementation.bind.annotation.AllArguments;
+import net.bytebuddy.implementation.bind.annotation.Origin;
+import net.bytebuddy.implementation.bind.annotation.RuntimeType;
+import net.bytebuddy.implementation.bind.annotation.This;
 import org.eclipse.jdt.annotation.Nullable;
 import org.mockito_inside.reflection.TypeUtils;
 
@@ -12,8 +16,11 @@ public class MockInvocationHandler implements InvocationHandler {
 	private final StubbingRegistry stubbingRegistry = new StubbingRegistryImpl();
 
 	@Nullable
+	@RuntimeType
 	@Override
-	public Object invoke( Object mock, Method method, Object[] args ) throws Throwable {
+	public Object invoke(@This Object mock,
+						 @Origin Method method,
+						 @AllArguments Object[] args ) throws Throwable {
 
 		StubbedInvocation invocation = new InvocationImpl( mock, method, args, stubbingRegistry );
 		MockingContext.get().pushInvocationForProcess( invocation );
